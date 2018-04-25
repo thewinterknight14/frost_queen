@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[39]:
+# In[89]:
 
 
 import numpy as np
@@ -20,7 +20,7 @@ get_ipython().magic(u'autoreload 2')
 np.random.seed(1)
 
 
-# In[50]:
+# In[100]:
 
 
 def load_data(hdf5_filepath):
@@ -30,11 +30,13 @@ def load_data(hdf5_filepath):
     
     train_X = np.array(dataset["train_X"][:])
     train_Y = np.array(dataset["train_Y"][:])
-    train_Y = np.reshape(train_Y, (len(train_Y),1))
+    train_Y = train_Y.reshape((1, train_Y.shape[0]))
+#     train_Y = np.reshape(train_Y, (len(train_Y),1))
     
     test_X = np.array(dataset["test_X"][:])
     test_Y = np.array(dataset["test_Y"][:])
-    test_Y = np.reshape(test_Y, (len(test_Y),1))
+    test_Y = test_Y.reshape((1, test_Y.shape[0]))
+#     test_Y = np.reshape(test_Y, (len(test_Y),1))
     
     print('train_X is a {} array and has {} examples' .format(train_X.shape, len(train_X)))
     print('train_Y is a {} array and has {} examples' .format(train_Y.shape, len(train_Y)))
@@ -45,7 +47,7 @@ def load_data(hdf5_filepath):
     return train_X, train_Y, test_X, test_Y
 
 
-# In[41]:
+# In[91]:
 
 
 def initialize_parameters(layer_dims):
@@ -58,24 +60,24 @@ def initialize_parameters(layer_dims):
         parameters['b' + str(l)] = np.zeros((layer_dims[l],1))
         
         assert(parameters['W' + str(l)].shape == (layer_dims[l], layer_dims[l-1]))
-        assert(parameters['b' + str(l)].shape == (layer_dims[l], layer_dims[l-1]))
+        assert(parameters['b' + str(l)].shape == (layer_dims[l], 1))
     
     return parameters
 
 
-# In[42]:
+# In[92]:
 
 
 def linear_forward(Aprev, W, b):
     Z = np.dot(W, Aprev) + b
     
-    assert(Z.shape == (W.shape[0], A.shape[1]))
+    assert(Z.shape == (W.shape[0], Aprev.shape[1]))
     linear_cache = (Aprev, W, b)
 
     return Z, linear_cache
 
 
-# In[43]:
+# In[93]:
 
 
 def linear_activation_forward(Aprev, W, b, activation):
@@ -86,12 +88,13 @@ def linear_activation_forward(Aprev, W, b, activation):
         Z, linear_cache = linear_forward(Aprev, W, b)
         A, activation_cache = relu(Z)
         
+    assert (A.shape == (W.shape[0], Aprev.shape[1]))
     cache = (linear_cache, activation_cache)
     
     return A, cache
 
 
-# In[44]:
+# In[94]:
 
 
 def L_model_forward(X, parameters):
@@ -112,7 +115,7 @@ def L_model_forward(X, parameters):
     return AL, caches
 
 
-# In[45]:
+# In[95]:
 
 
 def compute_cost(AL, Y):
@@ -126,7 +129,7 @@ def compute_cost(AL, Y):
     return cost
 
 
-# In[46]:
+# In[96]:
 
 
 def linear_backward(dZ, linear_cache):
@@ -137,10 +140,14 @@ def linear_backward(dZ, linear_cache):
     db = (1/m) * np.sum(dZ, axis = 1, keepdims = True)
     dAprev = np.dot(W.T, dZ)
     
+    assert (dAprev.shape == Aprev.shape)
+    assert (dW.shape == W.shape)
+    assert (db.shape == b.shape)
+    
     return dAprev, dW, db
 
 
-# In[47]:
+# In[97]:
 
 
 def linear_activation_backward(dA, cache, activation):
@@ -156,7 +163,7 @@ def linear_activation_backward(dA, cache, activation):
     return dAprev, dW, db        
 
 
-# In[48]:
+# In[98]:
 
 
 def L_model_backward(AL, Y, caches):
@@ -169,24 +176,27 @@ def L_model_backward(AL, Y, caches):
     current_cache = caches[L-1]
     grads["dA" + str(L)], grads["dW" + str(L)], grads["db" + str(L)] = linear_activation_backward(dAL, current_cache, "sigmoid")
         
+    # loop from l=L-2 to l=0
     for l in reversed(range(L-1)):
         current_cache = caches[l]
-        dA_prev_temp, dW_temp, db_temp = linear_activation_backward(grads["dA" + str(l+2)], current_cache, "relu")     # as reversed(range(L-1)) starts from L-2, L-3,..., 3, 2, 1, 0
+        dAprev_temp, dW_temp, db_temp = linear_activation_backward(grads["dA" + str(l+2)], current_cache, "relu")     # as reversed(range(L-1)) starts from L-2, L-3,..., 3, 2, 1, 0
         
-        grads["dA" + str(l+1)] = dA_prev_temp
+        grads["dA" + str(l+1)] = dAprev_temp
         grads["dW" + str(l+1)] = dW_temp
         grads["db" + str(l+1)] = db_temp     # l+1 because labels are not 0 (no 0th layer)
         
     return grads
 
 
-# In[49]:
+# In[99]:
 
 
 def update_parameters(parameters, grads, learning_rate):
     L = len(parameters) // 2
     
-    for l in range(L):
+    for l in range(1,L+1):
         parameters["W" + str(l)] = parameters["W" + str(l)] - learning_rate * grads["dW" + str(l)]
-        parameters["db" + str(l)] = parameters["db" + str(l)] - learning_rate * grads["dW" + str(l)]
+        parameters["b" + str(l)] = parameters["b" + str(l)] - learning_rate * grads["db" + str(l)]
+        
+    return parameters
 
