@@ -23,7 +23,11 @@ def create_hd5file(data_path, hdf5_path, image_shape, shuffle_data = True):
         data = glob.glob(data_path%categ)
         print '%s = %s'%(categ, len(data))
         train_addrs += data
-        train_labels += [i]*len(data)
+        train_labels += [i] * 3000     # train_labels += [i]*len(data)
+        if i > 3000:
+            break
+
+
 
     # to shuffle train data
     if shuffle_data:
@@ -32,13 +36,13 @@ def create_hd5file(data_path, hdf5_path, image_shape, shuffle_data = True):
         train_addrs, train_labels = zip(*c)
 
 
-
     for i,categ in enumerate(['test']):
         data = glob.glob(data_path%categ)
         print '%s = %s'%(categ, len(data))
         test_addrs += data
-        test_labels += [i]*len(data)
-        print(data)
+        test_labels += [i] * 1000      # test_labels += [i]*len(data)
+        if i > 1000:
+            break
 
     # to shuffle test data
     if shuffle_data:
@@ -101,6 +105,12 @@ def create_hd5file(data_path, hdf5_path, image_shape, shuffle_data = True):
         elif 'dog.' in train_addrs[i]:
             # print('Dog {}' .format(i))
             hdf5_file["train_Y"][i] = 1
+
+
+        if i > 3000:
+            break;
+
+
     # save the mean in the hdf5 file
     #hdf5_file["train_mean"][...] = mean_train
 
@@ -135,6 +145,11 @@ def create_hd5file(data_path, hdf5_path, image_shape, shuffle_data = True):
         elif 'dog.' in test_addrs[i]:
             # print('Dog {}' .format(i))
             hdf5_file["test_Y"][i] = 1
+
+        if i > 1000:
+            break;
+
+
     # save the mean in the hdf5 file
     #hdf5_file["test_mean"][...] = mean_test
 
@@ -150,7 +165,7 @@ if __name__ == '__main__':
 
     # address to where you want to save the hdf5 file
     #hdf5_path = '/home/kadatta/Downloads/liveness_detection/code/hd5_files_dir/train_dataset_casiaipsoft_shuffled.h5'
-    hdf5_path = '/home/sunising/Downloads/misc/cats_vs_dogs/Data/load_dataset.h5'
+    hdf5_path = '/home/sunising/Downloads/misc/cats_vs_dogs/Data/train_test_data.h5'
 
     image_shape = (160,160,3)
     shuffle_data=True #shuffle the data before saving

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="730316e9-4589-4d34-bcd9-831597d0c39d" name="Default" comment="" />
+    <list default="true" id="730316e9-4589-4d34-bcd9-831597d0c39d" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/cat_vs_dog_classifier.py-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/cat_vs_dog_classifier.py-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/neural_network_utils-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/neural_network_utils-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/create_hdf5.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/create_hdf5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cat_vs_dog_classifier.py.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/cat_vs_dog_classifier.py.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neural_network_utils.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/neural_network_utils.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/neural_network_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/neural_network_utils.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,10 +20,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="create_hdf5.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/create_hdf5.py">
+        <entry file="file://$PROJECT_DIR$/Data/create_hdf5.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="68" column="42" lean-forward="true" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="42" />
+            <state relative-caret-position="345">
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -30,20 +38,25 @@
       <find>mean_train</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/load_dataset.py" />
         <option value="$PROJECT_DIR$/create_hdf5.py" />
+        <option value="$PROJECT_DIR$/Data/create_hdf5.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="2406" />
     <option name="y" value="80" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -55,6 +68,11 @@
             <path>
               <item name="cats_vs_dogs" type="b2602c69:ProjectViewProjectNode" />
               <item name="cats_vs_dogs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cats_vs_dogs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cats_vs_dogs" type="462c0819:PsiDirectoryNode" />
+              <item name="Data" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -79,7 +97,25 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.create_hdf5">
+  <component name="RunManager" selected="Python.create_hdf5 (1)">
+    <configuration name="create_hdf5 (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="cats_vs_dogs" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Data/create_hdf5.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="create_hdf5" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="cats_vs_dogs" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -119,9 +155,11 @@
     <list>
       <item itemvalue="Python.load_dataset" />
       <item itemvalue="Python.create_hdf5" />
+      <item itemvalue="Python.create_hdf5 (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.create_hdf5 (1)" />
         <item itemvalue="Python.create_hdf5" />
         <item itemvalue="Python.load_dataset" />
       </list>
@@ -141,14 +179,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="-4" width="1855" height="1084" extended-state="7" />
+    <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.18995634" />
       <window_info anchor="bottom" id="TODO" order="10" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50054586" side_tool="true" weight="0.32879582" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.49945414" visible="true" weight="0.29947644" />
-      <window_info anchor="bottom" id="Version Control" order="3" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.49945414" visible="true" weight="0.30010495" />
+      <window_info anchor="bottom" id="Version Control" order="3" />
       <window_info anchor="bottom" id="Python Console" order="0" sideWeight="0.49945414" weight="0.32984293" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.32924336" />
@@ -201,6 +239,37 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="332">
           <caret line="68" column="42" lean-forward="true" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activations_utils.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/IPSoft/DeepLearning/facenet/venv/local/lib/python2.7/site-packages/h5py/_hl/selections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="298" selection-start-line="298" selection-end-line="298" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/IPSoft/DeepLearning/facenet/venv/local/lib/python2.7/site-packages/h5py/_hl/dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="630" selection-start-line="630" selection-end-line="630" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data/create_hdf5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
