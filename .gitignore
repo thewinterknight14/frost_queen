@@ -8,3 +8,5 @@
 # Ignore idea & python notebook util files
 .idea/
 .ipynb_checkpoints/
+idea/
+ipynb_checkpoints/
