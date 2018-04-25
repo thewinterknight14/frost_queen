@@ -4,3 +4,7 @@
 # Ignore Train Test Data
 /Data/train
 /Data/test
+
+# Ignore idea & python notebook util files
+.idea/
+.ipynb_checkpoints/
