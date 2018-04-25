@@ -1,0 +1,6 @@
+# Ignore Dataset hdf5 file
+/Data/train_test_data.h5
+
+# Ignore Train Test Data
+/Data/train
+/Data/test
