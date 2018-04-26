@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[89]:
+# In[12]:
 
 
 import numpy as np
@@ -20,7 +20,7 @@ get_ipython().magic(u'autoreload 2')
 np.random.seed(1)
 
 
-# In[100]:
+# In[13]:
 
 
 def load_data(hdf5_filepath):
@@ -47,7 +47,7 @@ def load_data(hdf5_filepath):
     return train_X, train_Y, test_X, test_Y
 
 
-# In[91]:
+# In[14]:
 
 
 def initialize_parameters(layer_dims):
@@ -65,7 +65,7 @@ def initialize_parameters(layer_dims):
     return parameters
 
 
-# In[92]:
+# In[15]:
 
 
 def linear_forward(Aprev, W, b):
@@ -77,7 +77,7 @@ def linear_forward(Aprev, W, b):
     return Z, linear_cache
 
 
-# In[93]:
+# In[16]:
 
 
 def linear_activation_forward(Aprev, W, b, activation):
@@ -94,7 +94,7 @@ def linear_activation_forward(Aprev, W, b, activation):
     return A, cache
 
 
-# In[94]:
+# In[17]:
 
 
 def L_model_forward(X, parameters):
@@ -115,13 +115,13 @@ def L_model_forward(X, parameters):
     return AL, caches
 
 
-# In[95]:
+# In[18]:
 
 
 def compute_cost(AL, Y):
     m = Y.shape[1]
     
-    cost = -(1/m) * np.sum(Y*np.log(AL) + (1-Y)*np.log(1-AL))
+    cost = -(1.0/m) * np.sum(Y*np.log(AL) + (1-Y)*np.log(1-AL))
     cost = np.squeeze(cost)     # turns [[x]] to x
     
     assert(cost.shape == ())
@@ -129,15 +129,15 @@ def compute_cost(AL, Y):
     return cost
 
 
-# In[96]:
+# In[19]:
 
 
 def linear_backward(dZ, linear_cache):
     Aprev, W, b = linear_cache
     m = Aprev.shape[1]
     
-    dW = (1/m) * np.dot(dZ, Aprev.T)
-    db = (1/m) * np.sum(dZ, axis = 1, keepdims = True)
+    dW = (1.0/m) * np.dot(dZ, Aprev.T)
+    db = (1.0/m) * np.sum(dZ, axis = 1, keepdims = True)
     dAprev = np.dot(W.T, dZ)
     
     assert (dAprev.shape == Aprev.shape)
@@ -147,7 +147,7 @@ def linear_backward(dZ, linear_cache):
     return dAprev, dW, db
 
 
-# In[97]:
+# In[20]:
 
 
 def linear_activation_backward(dA, cache, activation):
@@ -163,7 +163,7 @@ def linear_activation_backward(dA, cache, activation):
     return dAprev, dW, db        
 
 
-# In[98]:
+# In[21]:
 
 
 def L_model_backward(AL, Y, caches):
@@ -188,7 +188,7 @@ def L_model_backward(AL, Y, caches):
     return grads
 
 
-# In[99]:
+# In[22]:
 
 
 def update_parameters(parameters, grads, learning_rate):
