@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[12]:
+# In[4]:
 
 
 import numpy as np
@@ -20,7 +20,7 @@ get_ipython().magic(u'autoreload 2')
 np.random.seed(1)
 
 
-# In[13]:
+# In[5]:
 
 
 def load_data(hdf5_filepath):
@@ -47,16 +47,19 @@ def load_data(hdf5_filepath):
     return train_X, train_Y, test_X, test_Y
 
 
-# In[14]:
+# In[6]:
 
 
-def initialize_parameters(layer_dims):
+def initialize_parameters(layer_dims, init_type):
     np.random.seed(3)
     parameters = {}
     L = len(layer_dims)
     
     for l in range(1,L):
-        parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * 0.01
+        if init_type == "random":
+            parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * 0.01
+        elif init_type == "he":
+            parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * np.sqrt(2/layer_dims[l-1])
         parameters['b' + str(l)] = np.zeros((layer_dims[l],1))
         
         assert(parameters['W' + str(l)].shape == (layer_dims[l], layer_dims[l-1]))
@@ -65,7 +68,7 @@ def initialize_parameters(layer_dims):
     return parameters
 
 
-# In[15]:
+# In[7]:
 
 
 def linear_forward(Aprev, W, b):
@@ -77,7 +80,7 @@ def linear_forward(Aprev, W, b):
     return Z, linear_cache
 
 
-# In[16]:
+# In[8]:
 
 
 def linear_activation_forward(Aprev, W, b, activation):
@@ -94,10 +97,10 @@ def linear_activation_forward(Aprev, W, b, activation):
     return A, cache
 
 
-# In[17]:
+# In[9]:
 
 
-def L_model_forward(X, parameters):
+def L_model_forward(X, parameters, keep_prob=1):
     caches = []
     A = X
     L = len(parameters) // 2     # number of layers in net
@@ -105,6 +108,15 @@ def L_model_forward(X, parameters):
     for l in range(1, L):
         Aprev = A
         A, cache = linear_activation_forward(Aprev, parameters["W" + str(l)], parameters["b" + str(l)], activation = "relu")
+        
+        if keep_prob < 1:
+            D = np.random.randn(*A.shape)
+            D = (D < keep_prob).astype(int)
+            A = np.multiply(A,D)
+            A = A / keep_prob
+            linear_cache, activation_cache = cache
+            cache = (linear_cache, activation_cache, D)
+            
         caches.append(cache)
     
     AL, cache = linear_activation_forward(A, parameters["W" + str(L)], parameters["b" + str(L)], activation = "sigmoid")
@@ -115,13 +127,23 @@ def L_model_forward(X, parameters):
     return AL, caches
 
 
-# In[18]:
+# In[15]:
 
 
-def compute_cost(AL, Y):
+def compute_cost(AL, Y, parameters, lambd=0):
     m = Y.shape[1]
+    L = len(parameters) // 2
     
-    cost = -(1.0/m) * np.sum(Y*np.log(AL) + (1-Y)*np.log(1-AL))
+    cross_entropy_cost = -(1.0/m) * np.sum(Y*np.log(AL) + (1-Y)*np.log(1-AL))
+    
+    L2_weight_penalty = 0
+    for l in range(1,L):
+        L2_weight_penalty += np.sum(np.square(parameters["W" + str(l)]))
+    
+    L2_regularization_cost = (lambd/(2*m)) * L2_weight_penalty
+    
+    cost = cross_entropy_cost + L2_regularization_cost
+    
     cost = np.squeeze(cost)     # turns [[x]] to x
     
     assert(cost.shape == ())
@@ -129,14 +151,14 @@ def compute_cost(AL, Y):
     return cost
 
 
-# In[19]:
+# In[16]:
 
 
-def linear_backward(dZ, linear_cache):
+def linear_backward(dZ, linear_cache, lambd):
     Aprev, W, b = linear_cache
     m = Aprev.shape[1]
     
-    dW = (1.0/m) * np.dot(dZ, Aprev.T)
+    dW = (1.0/m) * np.dot(dZ, Aprev.T) + (lambd/m) * W
     db = (1.0/m) * np.sum(dZ, axis = 1, keepdims = True)
     dAprev = np.dot(W.T, dZ)
     
@@ -147,26 +169,26 @@ def linear_backward(dZ, linear_cache):
     return dAprev, dW, db
 
 
-# In[20]:
+# In[12]:
 
 
-def linear_activation_backward(dA, cache, activation):
+def linear_activation_backward(dA, cache, activation, lambd):
     linear_cache, activation_cache = cache
     
     if activation == "relu":
         dZ = relu_backward(dA, activation_cache)
-        dAprev, dW, db = linear_backward(dZ, linear_cache)
+        dAprev, dW, db = linear_backward(dZ, linear_cache, lambd)
     elif activation == "sigmoid":
         dZ = sigmoid_backward(dA, activation_cache)
-        dAprev, dW, db = linear_backward(dZ, linear_cache)
+        dAprev, dW, db = linear_backward(dZ, linear_cache, lambd)
         
     return dAprev, dW, db        
 
 
-# In[21]:
+# In[20]:
 
 
-def L_model_backward(AL, Y, caches):
+def L_model_backward(AL, Y, caches, lambd=0, keep_prob=1):
     grads = {}
     L = len(caches)     # number of layers
     m = AL.shape[1]
@@ -174,21 +196,28 @@ def L_model_backward(AL, Y, caches):
     
     dAL = -np.divide(Y,AL) + np.divide((1-Y),(1-AL))
     current_cache = caches[L-1]
-    grads["dA" + str(L)], grads["dW" + str(L)], grads["db" + str(L)] = linear_activation_backward(dAL, current_cache, "sigmoid")
-        
+    grads["dA" + str(L-1)], grads["dW" + str(L)], grads["db" + str(L)] = linear_activation_backward(dAL, current_cache, "sigmoid", lambd)
+    
+    
     # loop from l=L-2 to l=0
     for l in reversed(range(L-1)):
         current_cache = caches[l]
-        dAprev_temp, dW_temp, db_temp = linear_activation_backward(grads["dA" + str(l+2)], current_cache, "relu")     # as reversed(range(L-1)) starts from L-2, L-3,..., 3, 2, 1, 0
         
-        grads["dA" + str(l+1)] = dAprev_temp
+        dA = grads["dA" + str(l+1)]
+        _,_,D = current_cache
+        dA = np.multiply(dA, D)
+        grads["dA" + str(l+1)] = dA / keep_prob
+        
+        dAprev_temp, dW_temp, db_temp = linear_activation_backward(grads["dA" + str(l+1)], current_cache[:2], "relu", lambd)     # as reversed(range(L-1)) starts from L-2, L-3,..., 3, 2, 1, 0
+                        
+        grads["dA" + str(l)] = dAprev_temp  
         grads["dW" + str(l+1)] = dW_temp
         grads["db" + str(l+1)] = db_temp     # l+1 because labels are not 0 (no 0th layer)
         
     return grads
 
 
-# In[22]:
+# In[14]:
 
 
 def update_parameters(parameters, grads, learning_rate):
